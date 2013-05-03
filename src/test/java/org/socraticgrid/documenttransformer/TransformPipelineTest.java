@@ -6,22 +6,22 @@ package org.socraticgrid.documenttransformer;
 
 import java.io.InputStream;
 import java.util.LinkedList;
-import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.junit.After;
+import org.junit.Test;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.springframework.context.ApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 /**
  *
  * @author Jerry Goodnough
  */
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 // ApplicationContext will be loaded from "/applicationContext.xml" and "/applicationContext-test.xml"
 // in the root of the classpath
@@ -55,7 +55,7 @@ public class TransformPipelineTest extends TestCase
     {
     }
 
-    public static Test suite()
+    public static junit.framework.Test suite()
     {
         TestSuite suite = new TestSuite(TransformPipelineTest.class);
         return suite;
@@ -91,7 +91,7 @@ public class TransformPipelineTest extends TestCase
     /**
      * Test of setApplicationContext method, of class TransformPipeline.
      */
-    @org.junit.Test
+    @Test
     public void testSetApplicationContext()
     {
         System.out.println("setApplicationContext");

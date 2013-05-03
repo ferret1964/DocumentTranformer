@@ -8,17 +8,37 @@ OVERWRITTEN WHEN YOU RE-RUN CODE GENERATION.
 Refer to the Altova MapForce Documentation for further details.
 http://www.altova.com/mapforce
 -->
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns0="http://mdws.medora.va.gov/EmrSvc" xmlns:user="http://www.altova.com/MapForce/UDF/user" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fn="http://www.w3.org/2005/xpath-functions" exclude-result-prefixes="ns0 user xs fn">
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns0="http://mdws.medora.va.gov/EmrSvc" xmlns:user="http://www.altova.com/MapForce/UDF/user" xmlns:vmf="http://www.altova.com/MapForce/UDF/vmf" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fn="http://www.w3.org/2005/xpath-functions" exclude-result-prefixes="ns0 user vmf xs fn">
 	<xsl:template name="user:FMDateToHL7">
 		<xsl:param name="FMdate" select="()"/>
 		<xsl:variable name="var1_resultof_cast" as="xs:double" select="xs:double(xs:decimal('4'))"/>
 		<xsl:sequence select="fn:concat(fn:concat(xs:string((xs:double(fn:substring($FMdate, xs:double(xs:decimal('1')), xs:double(xs:decimal('3')))) + xs:double('1700'))), fn:substring($FMdate, $var1_resultof_cast, $var1_resultof_cast)), fn:substring($FMdate, xs:double(xs:decimal('9')), xs:double(xs:decimal('6'))))"/>
 	</xsl:template>
+	<xsl:template name="vmf:vmf1_inputtoresult">
+		<xsl:param name="input" select="()"/>
+		<xsl:choose>
+			<xsl:when test="$input='H'">
+				<xsl:value-of select="'home'"/>
+			</xsl:when>
+			<xsl:when test="$input='WP'">
+				<xsl:value-of select="'work'"/>
+			</xsl:when>
+			<xsl:when test="$input='M'">
+				<xsl:value-of select="'mobile'"/>
+			</xsl:when>
+			<xsl:when test="$input='T'">
+				<xsl:value-of select="'temp'"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="'home'"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
 	<xsl:output method="xml" encoding="UTF-8" indent="yes"/>
 	<xsl:template match="/">
 		<xsl:variable name="var1_TaggedTextArray" as="node()?" select="ns0:TaggedTextArray"/>
 		<Patient xmlns="http://hl7.org/fhir" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-			<xsl:attribute name="xsi:schemaLocation" namespace="http://www.w3.org/2001/XMLSchema-instance" select="'http://hl7.org/fhir C:/Users/JERRYG~1/Dropbox/Cognitive/CDS/fhir-all-xsd/patient.xsd'"/>
+			<xsl:attribute name="xsi:schemaLocation" namespace="http://www.w3.org/2001/XMLSchema-instance" select="'http://hl7.org/fhir/patient.xsd'"/>
 			<xsl:for-each select="$var1_TaggedTextArray">
 				<xsl:attribute name="id" namespace="" select="xs:string(xs:integer(fn:string(ns0:results/ns0:TaggedText/ns0:text/ns0:results/ns0:demographics/ns0:patient/ns0:icn/@value)))"/>
 			</xsl:for-each>
@@ -84,7 +104,11 @@ http://www.altova.com/mapforce
 							<xsl:attribute name="value" namespace="" select="fn:string(@value)"/>
 						</value>
 						<use>
-							<xsl:attribute name="value" namespace="" select="fn:string(@usageType)"/>
+							<xsl:attribute name="value" namespace="">
+								<xsl:call-template name="vmf:vmf1_inputtoresult">
+									<xsl:with-param name="input" select="fn:string(@usageType)" as="xs:string"/>
+								</xsl:call-template>
+							</xsl:attribute>
 						</use>
 					</telecom>
 				</xsl:for-each>

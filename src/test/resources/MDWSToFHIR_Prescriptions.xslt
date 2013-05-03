@@ -29,7 +29,7 @@ http://www.altova.com/mapforce
 	<xsl:param name="status" as="xs:string?" select="()"/>
 	<xsl:template match="/">
 		<PrescriptionList xmlns="http://hl7.org/fhir" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-			<xsl:attribute name="xsi:schemaLocation" namespace="http://www.w3.org/2001/XMLSchema-instance" select="'http://hl7.org/fhir C:/Users/JERRYG~1/Dropbox/Cognitive/CDS/fhir-all-xsd/cm_prescriptions.xsd'"/>
+			<xsl:attribute name="xsi:schemaLocation" namespace="http://www.w3.org/2001/XMLSchema-instance" select="'http://hl7.org/fhir/cm_prescriptions.xsd'"/>
 			<xsl:for-each select="ns0:TaggedTextArray">
 				<xsl:variable name="var5_resultof_filter" as="node()*">
 					<xsl:for-each select="ns0:results/ns0:TaggedText/ns0:text/ns0:results/ns0:meds/ns0:med">
