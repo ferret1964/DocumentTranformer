@@ -23,9 +23,6 @@ public class DocumenttransformerSuite extends TestCase
     public static Test suite()
     {
         TestSuite suite = new TestSuite("DocumenttransformerSuite");
-        suite.addTest(TransformerTest.suite());
-        suite.addTest(TransformPipelineTest.suite());
-        suite.addTest(TransformStepTest.suite());
         return suite;
     }
     

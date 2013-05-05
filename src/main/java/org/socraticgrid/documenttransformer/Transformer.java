@@ -21,10 +21,10 @@ public class Transformer
     //Initialization
     //Transfomation
 
-    static
-    {
-        System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
-    }
+    //static
+    //{
+    //    System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
+    //}
 
     public void setTransformPipeline(HashMap<String, TransformPipeline> transformPipeline)
     {
