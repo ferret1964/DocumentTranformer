@@ -60,15 +60,15 @@ http://www.altova.com/mapforce
 					</xsl:for-each>
 				</xsl:variable>
 				<xsl:for-each select="$var5_resultof_filter">
-					<xsl:variable name="var30_cur" as="node()" select="."/>
-					<xsl:variable name="var6_orderingProvider" as="node()?" select="ns0:orderingProvider"/>
-					<xsl:variable name="var7_doses" as="node()?" select="ns0:doses"/>
-					<xsl:variable name="var8_vaStatus" as="node()?" select="ns0:vaStatus"/>
-					<xsl:variable name="var9_resultof_cast" as="xs:string" select="xs:string(xs:anyURI('org.socraticgrid.constants.VAStatus'))"/>
+					<xsl:variable name="var45_cur" as="node()" select="."/>
+					<xsl:variable name="var6_resultof_cast" as="xs:string" select="xs:string(xs:anyURI('org.socraticgrid.constants.VAStatus'))"/>
+					<xsl:variable name="var7_resultof_cast" as="xs:string" select="xs:string(xs:anyURI('vuid'))"/>
+					<xsl:variable name="var8_products" as="node()?" select="ns0:products"/>
+					<xsl:variable name="var9_doses" as="node()?" select="ns0:doses"/>
 					<xsl:variable name="var10_stop" as="node()?" select="ns0:stop"/>
 					<xsl:variable name="var11_facility" as="node()?" select="ns0:facility"/>
-					<xsl:variable name="var12_products" as="node()?" select="ns0:products"/>
-					<xsl:variable name="var13_resultof_cast" as="xs:string" select="xs:string(xs:anyURI('vuid'))"/>
+					<xsl:variable name="var12_orderingProvider" as="node()?" select="ns0:orderingProvider"/>
+					<xsl:variable name="var13_vaStatus" as="node()?" select="ns0:vaStatus"/>
 					<Prescription>
 						<xsl:for-each select="ns0:id">
 							<xsl:attribute name="id" namespace="" select="xs:string(xs:integer(fn:string(@value)))"/>
@@ -97,7 +97,7 @@ http://www.altova.com/mapforce
 							</id>
 						</identifier>
 						<status>
-							<xsl:for-each select="$var8_vaStatus">
+							<xsl:for-each select="$var13_vaStatus">
 								<xsl:attribute name="value" namespace="">
 									<xsl:call-template name="vmf:vmf1_inputtoresult">
 										<xsl:with-param name="input" select="fn:string(@value)" as="xs:string"/>
@@ -117,14 +117,14 @@ http://www.altova.com/mapforce
 							</extension>
 							<extension>
 								<url>
-									<xsl:attribute name="value" namespace="" select="$var9_resultof_cast"/>
+									<xsl:attribute name="value" namespace="" select="$var6_resultof_cast"/>
 								</url>
 								<valueCoding>
 									<system>
-										<xsl:attribute name="value" namespace="" select="$var9_resultof_cast"/>
+										<xsl:attribute name="value" namespace="" select="$var6_resultof_cast"/>
 									</system>
 									<code>
-										<xsl:for-each select="$var8_vaStatus">
+										<xsl:for-each select="$var13_vaStatus">
 											<xsl:attribute name="value" namespace="" select="fn:string(@value)"/>
 										</xsl:for-each>
 									</code>
@@ -139,10 +139,10 @@ http://www.altova.com/mapforce
 						</patient>
 						<prescriber>
 							<display>
-								<xsl:for-each select="$var6_orderingProvider">
+								<xsl:for-each select="$var12_orderingProvider">
 									<xsl:attribute name="id" namespace="" select="xs:string(xs:integer(fn:string(@code)))"/>
 								</xsl:for-each>
-								<xsl:for-each select="$var6_orderingProvider">
+								<xsl:for-each select="$var12_orderingProvider">
 									<xsl:variable name="var16_resultof_cast" as="xs:string" select="fn:string(@name)"/>
 									<xsl:attribute name="value" namespace="" select="$var16_resultof_cast"/>
 								</xsl:for-each>
@@ -181,7 +181,7 @@ http://www.altova.com/mapforce
 							</quantity>
 						</dispense>
 						<medicine>
-							<xsl:for-each select="$var12_products">
+							<xsl:for-each select="$var8_products">
 								<xsl:variable name="var19_resultof_first" as="node()" select="ns0:product/ns0:class"/>
 								<extension>
 									<url>
@@ -205,16 +205,16 @@ http://www.altova.com/mapforce
 							<identification>
 								<coding>
 									<system>
-										<xsl:attribute name="value" namespace="" select="$var13_resultof_cast"/>
+										<xsl:attribute name="value" namespace="" select="$var7_resultof_cast"/>
 									</system>
 									<code>
-										<xsl:for-each select="$var12_products">
+										<xsl:for-each select="$var8_products">
 											<xsl:attribute name="value" namespace="" select="xs:string(xs:integer(fn:string(ns0:product/ns0:vaProduct/@vuid)))"/>
 										</xsl:for-each>
 									</code>
 								</coding>
 								<text>
-									<xsl:for-each select="$var12_products">
+									<xsl:for-each select="$var8_products">
 										<xsl:attribute name="value" namespace="" select="fn:string(ns0:product/ns0:vaProduct/@name)"/>
 									</xsl:for-each>
 								</text>
@@ -223,16 +223,16 @@ http://www.altova.com/mapforce
 								<identification>
 									<coding>
 										<system>
-											<xsl:attribute name="value" namespace="" select="$var13_resultof_cast"/>
+											<xsl:attribute name="value" namespace="" select="$var7_resultof_cast"/>
 										</system>
 										<code>
-											<xsl:for-each select="$var12_products">
+											<xsl:for-each select="$var8_products">
 												<xsl:attribute name="value" namespace="" select="xs:string(xs:integer(fn:string(ns0:product/ns0:vaGeneric/@vuid)))"/>
 											</xsl:for-each>
 										</code>
 									</coding>
 									<text>
-										<xsl:for-each select="$var12_products">
+										<xsl:for-each select="$var8_products">
 											<xsl:attribute name="value" namespace="" select="fn:string(ns0:product/ns0:vaGeneric/@name)"/>
 										</xsl:for-each>
 									</text>
@@ -274,20 +274,103 @@ http://www.altova.com/mapforce
 							<dosageInstruction>
 								<route>
 									<text>
-										<xsl:for-each select="$var7_doses">
+										<xsl:for-each select="$var9_doses">
 											<xsl:attribute name="value" namespace="" select="fn:string(ns0:dose/@route)"/>
 										</xsl:for-each>
 									</text>
 								</route>
 								<doseQuantity>
+									<xsl:variable name="var27_resultof_filter" as="node()?">
+										<xsl:for-each select="$var9_doses">
+											<xsl:variable name="var24_resultof_cast" as="xs:string" select="fn:string(ns0:dose/@dose)"/>
+											<xsl:variable name="var26_result" as="xs:boolean">
+												<xsl:choose>
+													<xsl:when test="fn:contains($var24_resultof_cast, ' ')">
+														<xsl:variable name="var25_resultof_index_map" as="xs:boolean*">
+															<xsl:for-each select="tokenize($var24_resultof_cast, replace(' ', '(\.|\$|\^|\{|\[|\(|\||\)|\*|\+|\?|\\)', '\\$1'))">
+																<xsl:sequence select="(xs:decimal('1') = position())"/>
+															</xsl:for-each>
+														</xsl:variable>
+														<xsl:sequence select="fn:exists($var25_resultof_index_map[.])"/>
+													</xsl:when>
+													<xsl:otherwise>
+														<xsl:sequence select="fn:true()"/>
+													</xsl:otherwise>
+												</xsl:choose>
+											</xsl:variable>
+											<xsl:if test="$var26_result">
+												<xsl:sequence select="."/>
+											</xsl:if>
+										</xsl:for-each>
+									</xsl:variable>
 									<value>
-										<xsl:for-each select="$var7_doses">
-											<xsl:attribute name="value" namespace="" select="xs:string(xs:integer(fn:string(ns0:dose/@dose)))"/>
+										<xsl:for-each select="$var27_resultof_filter">
+											<xsl:variable name="var28_resultof_first" as="node()" select="ns0:dose/@dose"/>
+											<xsl:variable name="var29_resultof_cast" as="xs:string" select="fn:string($var28_resultof_first)"/>
+											<xsl:variable name="var31_result" as="xs:string">
+												<xsl:choose>
+													<xsl:when test="fn:contains($var29_resultof_cast, ' ')">
+														<xsl:variable name="var30_resultof_index_map" as="xs:string*">
+															<xsl:for-each select="tokenize($var29_resultof_cast, replace(' ', '(\.|\$|\^|\{|\[|\(|\||\)|\*|\+|\?|\\)', '\\$1'))">
+																<xsl:if test="(xs:decimal('1') = position())">
+																	<xsl:sequence select="."/>
+																</xsl:if>
+															</xsl:for-each>
+														</xsl:variable>
+														<xsl:sequence select="xs:string(fn:string-join(for $x in $var30_resultof_index_map return xs:string($x), ' '))"/>
+													</xsl:when>
+													<xsl:otherwise>
+														<xsl:sequence select="$var29_resultof_cast"/>
+													</xsl:otherwise>
+												</xsl:choose>
+											</xsl:variable>
+											<xsl:attribute name="value" namespace="" select="xs:string(xs:decimal($var31_result))"/>
 										</xsl:for-each>
 									</value>
+									<xsl:variable name="var35_resultof_filter" as="node()?">
+										<xsl:for-each select="$var9_doses">
+											<xsl:variable name="var32_resultof_cast" as="xs:string" select="fn:string(ns0:dose/@dose)"/>
+											<xsl:variable name="var34_result" as="xs:boolean">
+												<xsl:choose>
+													<xsl:when test="fn:contains($var32_resultof_cast, ' ')">
+														<xsl:variable name="var33_resultof_index_map" as="xs:boolean*">
+															<xsl:for-each select="tokenize($var32_resultof_cast, replace(' ', '(\.|\$|\^|\{|\[|\(|\||\)|\*|\+|\?|\\)', '\\$1'))">
+																<xsl:sequence select="fn:not((xs:decimal('1') = position()))"/>
+															</xsl:for-each>
+														</xsl:variable>
+														<xsl:sequence select="fn:exists($var33_resultof_index_map[.])"/>
+													</xsl:when>
+													<xsl:otherwise>
+														<xsl:sequence select="fn:true()"/>
+													</xsl:otherwise>
+												</xsl:choose>
+											</xsl:variable>
+											<xsl:if test="$var34_result">
+												<xsl:sequence select="."/>
+											</xsl:if>
+										</xsl:for-each>
+									</xsl:variable>
 									<units>
-										<xsl:for-each select="$var7_doses">
-											<xsl:attribute name="value" namespace="" select="fn:string(ns0:dose/@units)"/>
+										<xsl:for-each select="$var35_resultof_filter">
+											<xsl:variable name="var36_resultof_first" as="node()" select="ns0:dose"/>
+											<xsl:variable name="var37_resultof_cast" as="xs:string" select="fn:string($var36_resultof_first/@dose)"/>
+											<xsl:attribute name="value" namespace="">
+												<xsl:choose>
+													<xsl:when test="fn:contains($var37_resultof_cast, ' ')">
+														<xsl:variable name="var38_resultof_index_map" as="xs:string*">
+															<xsl:for-each select="tokenize($var37_resultof_cast, replace(' ', '(\.|\$|\^|\{|\[|\(|\||\)|\*|\+|\?|\\)', '\\$1'))">
+																<xsl:if test="fn:not((xs:decimal('1') = position()))">
+																	<xsl:sequence select="."/>
+																</xsl:if>
+															</xsl:for-each>
+														</xsl:variable>
+														<xsl:sequence select="xs:string(fn:string-join(for $x in $var38_resultof_index_map return xs:string($x), ' '))"/>
+													</xsl:when>
+													<xsl:otherwise>
+														<xsl:sequence select="fn:string($var36_resultof_first/@units)"/>
+													</xsl:otherwise>
+												</xsl:choose>
+											</xsl:attribute>
 										</xsl:for-each>
 									</units>
 								</doseQuantity>
@@ -297,7 +380,7 @@ http://www.altova.com/mapforce
 											<xsl:attribute name="value" namespace="" select="xs:string(xs:anyURI('org.socraticgrid.constants.VASchedule'))"/>
 										</url>
 										<valueString>
-											<xsl:for-each select="$var7_doses">
+											<xsl:for-each select="$var9_doses">
 												<xsl:attribute name="value" namespace="" select="fn:string(ns0:dose/@schedule)"/>
 											</xsl:for-each>
 										</valueString>
@@ -305,53 +388,53 @@ http://www.altova.com/mapforce
 									<repeat>
 										<duration>
 											<xsl:for-each select="$var10_stop">
-												<xsl:variable name="var25_resultof_FMDateToHL_" as="xs:string?">
+												<xsl:variable name="var40_resultof_FMDateToHL_" as="xs:string?">
 													<xsl:call-template name="user:FMDateToHL7">
 														<xsl:with-param name="FMdate" select="fn:string(@value)" as="xs:string"/>
 													</xsl:call-template>
 												</xsl:variable>
-												<xsl:if test="fn:exists($var25_resultof_FMDateToHL_)">
-													<xsl:for-each select="$var30_cur/ns0:start">
-														<xsl:variable name="var24_resultof_FMDateToHL_" as="xs:string?">
+												<xsl:if test="fn:exists($var40_resultof_FMDateToHL_)">
+													<xsl:for-each select="$var45_cur/ns0:start">
+														<xsl:variable name="var39_resultof_FMDateToHL_" as="xs:string?">
 															<xsl:call-template name="user:FMDateToHL7">
 																<xsl:with-param name="FMdate" select="fn:string(@value)" as="xs:string"/>
 															</xsl:call-template>
 														</xsl:variable>
-														<xsl:if test="fn:exists($var24_resultof_FMDateToHL_)">
-															<xsl:attribute name="value" namespace="" select="xs:string(fn:days-from-duration((xs:date(fn:concat(fn:concat(fn:concat(fn:concat(fn:substring($var25_resultof_FMDateToHL_, xs:double(xs:decimal('1')), xs:double(xs:decimal('4'))), '-'), fn:substring($var25_resultof_FMDateToHL_, xs:double(xs:decimal('5')), xs:double(xs:decimal('2')))), '-'), fn:substring($var25_resultof_FMDateToHL_, xs:double(xs:decimal('7')), xs:double(xs:decimal('2'))))) - xs:date(fn:concat(fn:concat(fn:concat(fn:concat(fn:substring($var24_resultof_FMDateToHL_, xs:double(xs:decimal('1')), xs:double(xs:decimal('4'))), '-'), fn:substring($var24_resultof_FMDateToHL_, xs:double(xs:decimal('5')), xs:double(xs:decimal('2')))), '-'), fn:substring($var24_resultof_FMDateToHL_, xs:double(xs:decimal('7')), xs:double(xs:decimal('2'))))))))"/>
+														<xsl:if test="fn:exists($var39_resultof_FMDateToHL_)">
+															<xsl:attribute name="value" namespace="" select="xs:string(fn:days-from-duration((xs:date(fn:concat(fn:concat(fn:concat(fn:concat(fn:substring($var40_resultof_FMDateToHL_, xs:double(xs:decimal('1')), xs:double(xs:decimal('4'))), '-'), fn:substring($var40_resultof_FMDateToHL_, xs:double(xs:decimal('5')), xs:double(xs:decimal('2')))), '-'), fn:substring($var40_resultof_FMDateToHL_, xs:double(xs:decimal('7')), xs:double(xs:decimal('2'))))) - xs:date(fn:concat(fn:concat(fn:concat(fn:concat(fn:substring($var39_resultof_FMDateToHL_, xs:double(xs:decimal('1')), xs:double(xs:decimal('4'))), '-'), fn:substring($var39_resultof_FMDateToHL_, xs:double(xs:decimal('5')), xs:double(xs:decimal('2')))), '-'), fn:substring($var39_resultof_FMDateToHL_, xs:double(xs:decimal('7')), xs:double(xs:decimal('2'))))))))"/>
 														</xsl:if>
 													</xsl:for-each>
 												</xsl:if>
 											</xsl:for-each>
 										</duration>
-										<xsl:variable name="var29_resultof_map" as="xs:boolean?">
+										<xsl:variable name="var44_resultof_map" as="xs:boolean?">
 											<xsl:for-each select="$var10_stop">
-												<xsl:variable name="var27_resultof_FMDateToHL_" as="xs:string?">
+												<xsl:variable name="var42_resultof_FMDateToHL_" as="xs:string?">
 													<xsl:call-template name="user:FMDateToHL7">
 														<xsl:with-param name="FMdate" select="fn:string(@value)" as="xs:string"/>
 													</xsl:call-template>
 												</xsl:variable>
-												<xsl:variable name="var28_result" as="xs:boolean?">
-													<xsl:if test="fn:exists($var27_resultof_FMDateToHL_)">
-														<xsl:for-each select="$var30_cur/ns0:start">
-															<xsl:variable name="var26_resultof_FMDateToHL_" as="xs:string?">
+												<xsl:variable name="var43_result" as="xs:boolean?">
+													<xsl:if test="fn:exists($var42_resultof_FMDateToHL_)">
+														<xsl:for-each select="$var45_cur/ns0:start">
+															<xsl:variable name="var41_resultof_FMDateToHL_" as="xs:string?">
 																<xsl:call-template name="user:FMDateToHL7">
 																	<xsl:with-param name="FMdate" select="fn:string(@value)" as="xs:string"/>
 																</xsl:call-template>
 															</xsl:variable>
-															<xsl:if test="fn:exists($var26_resultof_FMDateToHL_)">
-																<xsl:if test="(fn:days-from-duration((xs:date(fn:concat(fn:concat(fn:concat(fn:concat(fn:substring($var27_resultof_FMDateToHL_, xs:double(xs:decimal('1')), xs:double(xs:decimal('4'))), '-'), fn:substring($var27_resultof_FMDateToHL_, xs:double(xs:decimal('5')), xs:double(xs:decimal('2')))), '-'), fn:substring($var27_resultof_FMDateToHL_, xs:double(xs:decimal('7')), xs:double(xs:decimal('2'))))) - xs:date(fn:concat(fn:concat(fn:concat(fn:concat(fn:substring($var26_resultof_FMDateToHL_, xs:double(xs:decimal('1')), xs:double(xs:decimal('4'))), '-'), fn:substring($var26_resultof_FMDateToHL_, xs:double(xs:decimal('5')), xs:double(xs:decimal('2')))), '-'), fn:substring($var26_resultof_FMDateToHL_, xs:double(xs:decimal('7')), xs:double(xs:decimal('2'))))))) &gt; xs:decimal('0'))">
+															<xsl:if test="fn:exists($var41_resultof_FMDateToHL_)">
+																<xsl:if test="(fn:days-from-duration((xs:date(fn:concat(fn:concat(fn:concat(fn:concat(fn:substring($var42_resultof_FMDateToHL_, xs:double(xs:decimal('1')), xs:double(xs:decimal('4'))), '-'), fn:substring($var42_resultof_FMDateToHL_, xs:double(xs:decimal('5')), xs:double(xs:decimal('2')))), '-'), fn:substring($var42_resultof_FMDateToHL_, xs:double(xs:decimal('7')), xs:double(xs:decimal('2'))))) - xs:date(fn:concat(fn:concat(fn:concat(fn:concat(fn:substring($var41_resultof_FMDateToHL_, xs:double(xs:decimal('1')), xs:double(xs:decimal('4'))), '-'), fn:substring($var41_resultof_FMDateToHL_, xs:double(xs:decimal('5')), xs:double(xs:decimal('2')))), '-'), fn:substring($var41_resultof_FMDateToHL_, xs:double(xs:decimal('7')), xs:double(xs:decimal('2'))))))) &gt; xs:decimal('0'))">
 																	<xsl:sequence select="fn:true()"/>
 																</xsl:if>
 															</xsl:if>
 														</xsl:for-each>
 													</xsl:if>
 												</xsl:variable>
-												<xsl:sequence select="fn:exists($var28_result)"/>
+												<xsl:sequence select="fn:exists($var43_result)"/>
 											</xsl:for-each>
 										</xsl:variable>
 										<units>
-											<xsl:if test="fn:exists($var29_resultof_map[.])">
+											<xsl:if test="fn:exists($var44_resultof_map[.])">
 												<xsl:attribute name="value" namespace="" select="'days'"/>
 											</xsl:if>
 										</units>
