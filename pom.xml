@@ -47,5 +47,17 @@
       <artifactId>Saxon-HE</artifactId>
       <version>9.4.0.7</version>
     </dependency>
+    <dependency>
+      <artifactId>guava</artifactId>
+      <groupId>com.google.guava</groupId>
+      <type>jar</type>
+      <version>14.0.1</version>
+    </dependency>
+    <dependency>
+      <artifactId>org.springframework.context</artifactId>
+      <groupId>org.springframework</groupId>
+      <type>jar</type>
+      <version>3.1.0.RELEASE</version>
+    </dependency>
   </dependencies>
 </project>
