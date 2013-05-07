@@ -102,16 +102,24 @@ public class XSLTTransformStep implements org.springframework.context.Applicatio
             {
                 System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
 
-
+                TransformerFactory tfactory = TransformerFactory.newInstance();
                 tx = tfactory.newTransformer(new StreamSource(resource.getInputStream()));
-                if (styleSheetParameters != null)
+                if (tx != null)
                 {
-                    Iterator<String> keyItr = styleSheetParameters.keySet().iterator();
-                    while (keyItr.hasNext())
+                    if (styleSheetParameters != null)
                     {
-                        String key = keyItr.next();
-                        tx.setParameter(key, styleSheetParameters.get(key));
+                        Iterator<String> keyItr = styleSheetParameters.keySet().iterator();
+                        while (keyItr.hasNext())
+                        {
+                            String key = keyItr.next();
+                            tx.setParameter(key, styleSheetParameters.get(key));
+                        }
                     }
+                }
+                else
+                {
+                    Logger.getLogger(Transformer.class.getName()).log(Level.SEVERE, "Unable to load "+styleSheet);
+                    
                 }
             }
             catch (IOException ex)
