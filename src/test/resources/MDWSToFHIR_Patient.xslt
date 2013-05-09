@@ -36,124 +36,115 @@ http://www.altova.com/mapforce
 	</xsl:template>
 	<xsl:output method="xml" encoding="UTF-8" indent="yes"/>
 	<xsl:template match="/">
-		<xsl:variable name="var1_TaggedTextArray" as="node()?" select="ns0:TaggedTextArray"/>
 		<Patient xmlns="http://hl7.org/fhir" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-			<xsl:attribute name="xsi:schemaLocation" namespace="http://www.w3.org/2001/XMLSchema-instance" select="'http://hl7.org/fhir/patient.xsd'"/>
-			<xsl:for-each select="$var1_TaggedTextArray">
-				<xsl:attribute name="id" namespace="" select="xs:string(xs:integer(fn:string(ns0:results/ns0:TaggedText/ns0:text/ns0:results/ns0:demographics/ns0:patient/ns0:icn/@value)))"/>
-			</xsl:for-each>
-			<identifier>
-				<system>
-					<xsl:attribute name="value" namespace="" select="xs:string(xs:anyURI('national.dfn'))"/>
-				</system>
-				<id>
-					<xsl:for-each select="$var1_TaggedTextArray">
-						<xsl:attribute name="value" namespace="" select="xs:string(xs:integer(fn:string(ns0:results/ns0:TaggedText/ns0:text/ns0:results/ns0:demographics/ns0:patient/ns0:icn/@value)))"/>
-					</xsl:for-each>
-				</id>
-			</identifier>
-			<details>
-				<xsl:for-each select="$var1_TaggedTextArray">
-					<xsl:variable name="var2_resultof_cast" as="xs:string" select="xs:string(xs:integer(fn:string(ns0:results/ns0:TaggedText/ns0:text/ns0:results/ns0:demographics/ns0:patient/ns0:ssn/@value)))"/>
+			<xsl:attribute name="xsi:schemaLocation" namespace="http://www.w3.org/2001/XMLSchema-instance" select="'http://hl7.org/fhir C:/Users/JERRYG~1/Dropbox/Cognitive/CDS/fhir-all-xsd/patient.xsd'"/>
+			<xsl:for-each select="ns0:TaggedTextArray">
+				<xsl:variable name="var1_resultof_first" as="node()" select="ns0:results/ns0:TaggedText/ns0:text/ns0:results/ns0:demographics/ns0:patient"/>
+				<xsl:variable name="var2_address" as="node()?" select="$var1_resultof_first/ns0:address"/>
+				<xsl:variable name="var3_resultof_cast" as="xs:string" select="xs:string(xs:integer(fn:string($var1_resultof_first/ns0:ssn/@value)))"/>
+				<xsl:variable name="var4_resultof_cast" as="xs:string" select="xs:string(xs:integer(fn:string($var1_resultof_first/ns0:id/@value)))"/>
+				<xsl:attribute name="id" namespace="" select="$var4_resultof_cast"/>
+				<identifier>
+					<label>
+						<xsl:attribute name="value" namespace="" select="$var4_resultof_cast"/>
+					</label>
+					<system>
+						<xsl:attribute name="value" namespace="" select="xs:string(xs:anyURI('dfn'))"/>
+					</system>
+					<id>
+						<xsl:attribute name="value" namespace="" select="$var4_resultof_cast"/>
+					</id>
+				</identifier>
+				<details>
 					<identifier>
 						<label>
-							<xsl:attribute name="value" namespace="" select="fn:concat('XXX-XX-', fn:substring($var2_resultof_cast, xs:double(xs:decimal('6')), xs:double(xs:decimal('4'))))"/>
+							<xsl:attribute name="value" namespace="" select="fn:concat('XXX-XX-', fn:substring($var3_resultof_cast, xs:double(xs:decimal('6')), xs:double(xs:decimal('4'))))"/>
 						</label>
 						<system>
 							<xsl:attribute name="value" namespace="" select="xs:string(xs:anyURI('ssn'))"/>
 						</system>
 						<id>
-							<xsl:attribute name="value" namespace="" select="$var2_resultof_cast"/>
-						</id>
-					</identifier>
-				</xsl:for-each>
-				<xsl:for-each select="$var1_TaggedTextArray">
-					<xsl:variable name="var3_resultof_cast" as="xs:string" select="xs:string(xs:integer(fn:string(ns0:results/ns0:TaggedText/ns0:text/ns0:results/ns0:demographics/ns0:patient/ns0:id/@value)))"/>
-					<identifier>
-						<label>
-							<xsl:attribute name="value" namespace="" select="$var3_resultof_cast"/>
-						</label>
-						<system>
-							<xsl:attribute name="value" namespace="" select="xs:string(xs:anyURI('dfn'))"/>
-						</system>
-						<id>
 							<xsl:attribute name="value" namespace="" select="$var3_resultof_cast"/>
 						</id>
 					</identifier>
-				</xsl:for-each>
-				<name>
-					<text>
-						<xsl:for-each select="$var1_TaggedTextArray">
-							<xsl:attribute name="value" namespace="" select="fn:string(ns0:results/ns0:TaggedText/ns0:text/ns0:results/ns0:demographics/ns0:patient/ns0:fullName/@value)"/>
-						</xsl:for-each>
-					</text>
-					<family>
-						<xsl:for-each select="$var1_TaggedTextArray">
-							<xsl:attribute name="value" namespace="" select="fn:string(ns0:results/ns0:TaggedText/ns0:text/ns0:results/ns0:demographics/ns0:patient/ns0:familyName/@value)"/>
-						</xsl:for-each>
-					</family>
-					<given>
-						<xsl:for-each select="$var1_TaggedTextArray">
-							<xsl:attribute name="value" namespace="" select="fn:string(ns0:results/ns0:TaggedText/ns0:text/ns0:results/ns0:demographics/ns0:patient/ns0:givenNames/@value)"/>
-						</xsl:for-each>
-					</given>
-				</name>
-				<xsl:for-each select="$var1_TaggedTextArray/ns0:results/ns0:TaggedText/ns0:text/ns0:results/ns0:demographics/ns0:patient/ns0:telecomList/ns0:telecom">
-					<telecom>
-						<value>
-							<xsl:attribute name="value" namespace="" select="fn:string(@value)"/>
-						</value>
-						<use>
-							<xsl:attribute name="value" namespace="">
-								<xsl:call-template name="vmf:vmf1_inputtoresult">
-									<xsl:with-param name="input" select="fn:string(@usageType)" as="xs:string"/>
-								</xsl:call-template>
-							</xsl:attribute>
-						</use>
-					</telecom>
-				</xsl:for-each>
-				<gender>
-					<display>
-						<xsl:for-each select="$var1_TaggedTextArray">
-							<xsl:attribute name="value" namespace="" select="fn:string(ns0:results/ns0:TaggedText/ns0:text/ns0:results/ns0:demographics/ns0:patient/ns0:gender/@value)"/>
-						</xsl:for-each>
-					</display>
-				</gender>
-				<birthDate>
-					<xsl:for-each select="$var1_TaggedTextArray">
-						<xsl:variable name="var4_resultof_FMDateToHL_" as="xs:string?">
-							<xsl:call-template name="user:FMDateToHL7">
-								<xsl:with-param name="FMdate" select="xs:string(xs:integer(fn:string(ns0:results/ns0:TaggedText/ns0:text/ns0:results/ns0:demographics/ns0:patient/ns0:dob/@value)))" as="xs:string"/>
-							</xsl:call-template>
-						</xsl:variable>
-						<xsl:if test="fn:exists($var4_resultof_FMDateToHL_)">
-							<xsl:attribute name="value" namespace="" select="$var4_resultof_FMDateToHL_"/>
-						</xsl:if>
+					<xsl:for-each select="$var1_resultof_first/ns0:icn">
+						<xsl:variable name="var5_resultof_cast" as="xs:string" select="xs:string(xs:integer(fn:string(@value)))"/>
+						<identifier>
+							<label>
+								<xsl:attribute name="value" namespace="" select="$var5_resultof_cast"/>
+							</label>
+							<system>
+								<xsl:attribute name="value" namespace="" select="xs:string(xs:anyURI('national.dfn'))"/>
+							</system>
+							<id>
+								<xsl:attribute name="value" namespace="" select="$var5_resultof_cast"/>
+							</id>
+						</identifier>
 					</xsl:for-each>
-				</birthDate>
-				<address>
-					<line>
-						<xsl:for-each select="$var1_TaggedTextArray">
-							<xsl:attribute name="value" namespace="" select="fn:string(ns0:results/ns0:TaggedText/ns0:text/ns0:results/ns0:demographics/ns0:patient/ns0:address/@streetLine1)"/>
-						</xsl:for-each>
-					</line>
-					<city>
-						<xsl:for-each select="$var1_TaggedTextArray">
-							<xsl:attribute name="value" namespace="" select="fn:string(ns0:results/ns0:TaggedText/ns0:text/ns0:results/ns0:demographics/ns0:patient/ns0:address/@city)"/>
-						</xsl:for-each>
-					</city>
-					<state>
-						<xsl:for-each select="$var1_TaggedTextArray">
-							<xsl:attribute name="value" namespace="" select="fn:string(ns0:results/ns0:TaggedText/ns0:text/ns0:results/ns0:demographics/ns0:patient/ns0:address/@stateProvince)"/>
-						</xsl:for-each>
-					</state>
-					<zip>
-						<xsl:for-each select="$var1_TaggedTextArray[fn:exists(ns0:results/ns0:TaggedText/ns0:text/ns0:results/ns0:demographics/ns0:patient/ns0:address/@postalCode)]">
-							<xsl:attribute name="value" namespace="" select="fn:string(ns0:results/ns0:TaggedText/ns0:text/ns0:results/ns0:demographics/ns0:patient/ns0:address/@postalCode)"/>
-						</xsl:for-each>
-					</zip>
-				</address>
-			</details>
+					<name>
+						<text>
+							<xsl:attribute name="value" namespace="" select="fn:string($var1_resultof_first/ns0:fullName/@value)"/>
+						</text>
+						<family>
+							<xsl:attribute name="value" namespace="" select="fn:string($var1_resultof_first/ns0:familyName/@value)"/>
+						</family>
+						<given>
+							<xsl:attribute name="value" namespace="" select="fn:string($var1_resultof_first/ns0:givenNames/@value)"/>
+						</given>
+					</name>
+					<xsl:for-each select="$var1_resultof_first/ns0:telecomList/ns0:telecom">
+						<telecom>
+							<value>
+								<xsl:attribute name="value" namespace="" select="fn:string(@value)"/>
+							</value>
+							<use>
+								<xsl:attribute name="value" namespace="">
+									<xsl:call-template name="vmf:vmf1_inputtoresult">
+										<xsl:with-param name="input" select="fn:string(@usageType)" as="xs:string"/>
+									</xsl:call-template>
+								</xsl:attribute>
+							</use>
+						</telecom>
+					</xsl:for-each>
+					<gender>
+						<display>
+							<xsl:attribute name="value" namespace="" select="fn:string($var1_resultof_first/ns0:gender/@value)"/>
+						</display>
+					</gender>
+					<xsl:variable name="var6_resultof_FMDateToHL_" as="xs:string?">
+						<xsl:call-template name="user:FMDateToHL7">
+							<xsl:with-param name="FMdate" select="xs:string(xs:integer(fn:string($var1_resultof_first/ns0:dob/@value)))" as="xs:string"/>
+						</xsl:call-template>
+					</xsl:variable>
+					<birthDate>
+						<xsl:if test="fn:exists($var6_resultof_FMDateToHL_)">
+							<xsl:attribute name="value" namespace="" select="$var6_resultof_FMDateToHL_"/>
+						</xsl:if>
+					</birthDate>
+					<address>
+						<line>
+							<xsl:for-each select="$var2_address">
+								<xsl:attribute name="value" namespace="" select="fn:string(@streetLine1)"/>
+							</xsl:for-each>
+						</line>
+						<city>
+							<xsl:for-each select="$var2_address">
+								<xsl:attribute name="value" namespace="" select="fn:string(@city)"/>
+							</xsl:for-each>
+						</city>
+						<state>
+							<xsl:for-each select="$var2_address">
+								<xsl:attribute name="value" namespace="" select="fn:string(@stateProvince)"/>
+							</xsl:for-each>
+						</state>
+						<zip>
+							<xsl:for-each select="$var2_address[fn:exists(@postalCode)]">
+								<xsl:attribute name="value" namespace="" select="fn:string(@postalCode)"/>
+							</xsl:for-each>
+						</zip>
+					</address>
+				</details>
+			</xsl:for-each>
 		</Patient>
 	</xsl:template>
 </xsl:stylesheet>
