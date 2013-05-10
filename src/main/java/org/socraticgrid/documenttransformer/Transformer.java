@@ -7,6 +7,7 @@ package org.socraticgrid.documenttransformer;
 import java.io.InputStream;
 import java.lang.String;
 import java.util.HashMap;
+import java.util.Properties;
 
 /**
  *
@@ -41,5 +42,15 @@ public class Transformer
    
         return out;
     }
-
+    
+    public String transform(String pipeline, InputStream inStr, Properties props)
+    {
+        String out = null;
+        if (transformPipeline.containsKey(pipeline))
+        {
+            out = transformPipeline.get(pipeline).transform(inStr);
+        }
+   
+        return out;
+    }
 }

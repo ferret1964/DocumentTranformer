@@ -9,12 +9,11 @@ import java.util.LinkedList;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.junit.After;
-import org.junit.Test;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 /**
@@ -64,6 +63,7 @@ public class TransformPipelineTest extends TestCase
     /**
      * Test of setTransformChain method, of class TransformPipeline.
      */
+    @Test
     public void testSetTransformChain()
     {
         System.out.println("setTransformChain");
@@ -71,7 +71,7 @@ public class TransformPipelineTest extends TestCase
         TransformPipeline instance = new TransformPipeline();
         instance.setTransformChain(transformChain);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        // fail("The test case is a prototype.");
     }
 
     /**
@@ -88,16 +88,5 @@ public class TransformPipelineTest extends TestCase
  
     }
 
-    /**
-     * Test of setApplicationContext method, of class TransformPipeline.
-     */
-    @Test
-    public void testSetApplicationContext()
-    {
-        System.out.println("setApplicationContext");
-        ApplicationContext appCtx = null;
-        TransformPipeline instance = new TransformPipeline();
-        instance.setApplicationContext(appCtx);
-      
-    }
+  
 }
