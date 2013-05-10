@@ -41,30 +41,30 @@ http://www.altova.com/mapforce
 			<xsl:for-each select="ns0:TaggedTextArray">
 				<xsl:variable name="var1_resultof_first" as="node()" select="ns0:results/ns0:TaggedText/ns0:text/ns0:results/ns0:demographics/ns0:patient"/>
 				<xsl:variable name="var2_address" as="node()?" select="$var1_resultof_first/ns0:address"/>
-				<xsl:variable name="var3_resultof_cast" as="xs:string" select="xs:string(xs:integer(fn:string($var1_resultof_first/ns0:ssn/@value)))"/>
-				<xsl:variable name="var4_resultof_cast" as="xs:string" select="xs:string(xs:integer(fn:string($var1_resultof_first/ns0:id/@value)))"/>
-				<xsl:attribute name="id" namespace="" select="$var4_resultof_cast"/>
+				<xsl:variable name="var3_resultof_cast" as="xs:string" select="xs:string(xs:integer(fn:string($var1_resultof_first/ns0:id/@value)))"/>
+				<xsl:variable name="var4_resultof_cast" as="xs:string" select="xs:string(xs:integer(fn:string($var1_resultof_first/ns0:ssn/@value)))"/>
+				<xsl:attribute name="id" namespace="" select="$var3_resultof_cast"/>
 				<identifier>
 					<label>
-						<xsl:attribute name="value" namespace="" select="$var4_resultof_cast"/>
+						<xsl:attribute name="value" namespace="" select="$var3_resultof_cast"/>
 					</label>
 					<system>
 						<xsl:attribute name="value" namespace="" select="xs:string(xs:anyURI('dfn'))"/>
 					</system>
 					<id>
-						<xsl:attribute name="value" namespace="" select="$var4_resultof_cast"/>
+						<xsl:attribute name="value" namespace="" select="$var3_resultof_cast"/>
 					</id>
 				</identifier>
 				<details>
 					<identifier>
 						<label>
-							<xsl:attribute name="value" namespace="" select="fn:concat('XXX-XX-', fn:substring($var3_resultof_cast, xs:double(xs:decimal('6')), xs:double(xs:decimal('4'))))"/>
+							<xsl:attribute name="value" namespace="" select="fn:concat('XXX-XX-', fn:substring($var4_resultof_cast, xs:double(xs:decimal('6')), xs:double(xs:decimal('4'))))"/>
 						</label>
 						<system>
 							<xsl:attribute name="value" namespace="" select="xs:string(xs:anyURI('ssn'))"/>
 						</system>
 						<id>
-							<xsl:attribute name="value" namespace="" select="$var3_resultof_cast"/>
+							<xsl:attribute name="value" namespace="" select="$var4_resultof_cast"/>
 						</id>
 					</identifier>
 					<xsl:for-each select="$var1_resultof_first/ns0:icn">
@@ -144,6 +144,17 @@ http://www.altova.com/mapforce
 						</zip>
 					</address>
 				</details>
+				<contact>
+					<details>
+						<name>
+							<text>
+								<xsl:for-each select="$var1_resultof_first/ns0:supports">
+									<xsl:attribute name="value" namespace="" select="fn:string(ns0:support/@name)"/>
+								</xsl:for-each>
+							</text>
+						</name>
+					</details>
+				</contact>
 			</xsl:for-each>
 		</Patient>
 	</xsl:template>
